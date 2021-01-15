@@ -1,0 +1,79 @@
+import React, { Component } from "react";
+import { Input, Menu } from "semantic-ui-react";
+// const sourceTree = require( "react-treeview-semantic" );
+import SourceTree from "react-treeview-semantic";
+// import MenuData from "../menuData";
+
+export class MenuBar extends Component {
+  
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      search: "",
+      results: [{}],
+    };
+  }
+ 
+  const z = MenuData.map(function (item) {
+    const srch = () => {
+      return this.state.search;
+  }
+    
+    const obj = {
+      name: "",
+      children: [{}],
+    };
+    const x = item.name
+      .toLocaleLowerCase()
+      .includes(srch.toLocaleLowerCase());
+    if (x) {
+      obj.name = item.name;
+    }
+    obj.children = item.children.filter((child: { name: string }) =>
+      child.name.toLowerCase().includes(srch.toLowerCase())
+    );
+    // reqArry.push(obj);
+    if (obj.children.length > 0) {
+      if (obj.name === null) {
+        obj.name = item.name;
+      }
+    }
+    return obj;
+  });
+  
+
+  
+  render() {
+    return (
+      <div>
+        <Menu vertical dark>
+          <Menu.Item>
+            <Input placeholder="Search..." onChange={(event) => this.setState({Search:event.target.value})} />
+          </Menu.Item>
+          <Menu.Item>
+            <div
+              style={{
+                borderTop: "solid 1px grey",
+                marginTop: "1rem",
+                paddingTop: "1rem",
+              }}
+            >
+              <SourceTree
+                setActiveItem={console.log}
+                baseIcon={null}
+                baseColor={null}
+                checkable={true}
+                singleChecked={true}
+                treeData={MenuData}
+                getChecked={console.log}
+              />
+            </div>
+          </Menu.Item>
+        </Menu>
+      </div>
+    );
+  }
+}
+
+export default MenuBar;
