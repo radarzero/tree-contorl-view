@@ -7,37 +7,18 @@ import menuEle from "../menuData";
 function MenuBar() {
   const [Search, setSearch] = React.useState("");
 
-  const [Results, setResults] = React.useState([
-    { name: "home", children: [{}] },
-  ]);
-
+  const [Results, setResults] = React.useState(menuEle);
+  
   useEffect(() => {
-    let rslt = menuEle[0].children.map(function (item) {
-      const obj = {
-        name: "",
-        children: [{}],
-      };
-      if (item.name.toLocaleLowerCase().includes(Search.toLocaleLowerCase())) {
-        obj.name = item.name;
+   
+    setResults(menuEle.filter(function res(item:any){
+      if(item.name.toLowerCase().includes(Search.toLowerCase())){
+        return true;
+      }else if(item.children){
+        // we are returning children.length as it will be either 0 or not zero
+        return (item.children=item.children.filter((data)=>res(data))).length
       }
-      obj.children = item.children.filter((child: { name: string }) =>
-        child.name.toLowerCase().includes(Search.toLowerCase())
-      );
-
-      if (obj.children.length > 0) {
-        if (obj.name === "") {
-          obj.name = item.name;
-        }
-      }
-      if (item.name.toLocaleLowerCase().includes(Search.toLocaleLowerCase())) {
-        obj.children = item.children;
-      }
-
-      return obj;
-    });
-    setResults([
-      { name: "Home", children: rslt.filter((item) => item.name !== "") },
-    ]);
+    }));
   }, [Search]);
 
   return (
@@ -59,13 +40,13 @@ function MenuBar() {
         }}
       >
         <SourceTree
-          setActiveItem={console.log}
+          setActiveItem={console.log()}
           baseIcon={null}
           baseColor={"blue"}
           checkable={true}
-          singleChecked={true}
+          singleChecked={false}
           treeData={Results}
-          getChecked={console.log}
+          getChecked={console.log()}
         />
       </div>
     </div>
