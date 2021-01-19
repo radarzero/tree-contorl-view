@@ -9,20 +9,23 @@ function MenuBar() {
 
   const [Results, setResults] = React.useState(menuEle);
 
+  function copy(o){
+return Object.assign({},o)
+  }
   useEffect(() => {
-    setResults(
-      // eslint-disable-next-line array-callback-return
-      menuEle.filter(function res(item: any) {
-        if (item.name.toLowerCase().includes(Search.toLowerCase())) {
-          return true;
-        } else if (item.children) {
-          // we are returning children.length as it will be either 0 or not zero
-          return (item.children = item.children.filter((data: any) => res(data)))
-            .length;
-        }
-      })
-    );
-
+    
+    // eslint-disable-next-line array-callback-return
+    let x= menuEle.map(copy).filter(function res(item: any) {
+      if (item.name.toLocaleLowerCase().includes(Search.toLocaleLowerCase())) {
+        return true;
+      } 
+       if (item.children) {
+        // we are returning children.length as it will be either 0 or not zero
+        return (item.children = item.children.map(copy).filter((data: any) => res(data)))
+          .length;
+      }
+    });
+    setResults(x);
     
   }, [Search]);
 
