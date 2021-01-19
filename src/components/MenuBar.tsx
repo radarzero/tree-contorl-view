@@ -13,22 +13,17 @@ function MenuBar() {
 
   useEffect(() => {
     let rslt = menuEle[0].children.map(function (item) {
-      
       const obj = {
         name: "",
         children: [{}],
       };
-      const x = item.name
-        .toLocaleLowerCase()
-        .includes(Search.toLocaleLowerCase());
-      if (x) {
+      if (item.name.toLocaleLowerCase().includes(Search.toLocaleLowerCase())) {
         obj.name = item.name;
       }
       obj.children = item.children.filter((child: { name: string }) =>
         child.name.toLowerCase().includes(Search.toLowerCase())
       );
 
-     
       if (obj.children.length > 0) {
         if (obj.name === "") {
           obj.name = item.name;
@@ -66,7 +61,7 @@ function MenuBar() {
         <SourceTree
           setActiveItem={console.log}
           baseIcon={null}
-          baseColor={'blue'}
+          baseColor={"blue"}
           checkable={true}
           singleChecked={true}
           treeData={Results}
