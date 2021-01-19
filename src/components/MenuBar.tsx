@@ -8,17 +8,22 @@ function MenuBar() {
   const [Search, setSearch] = React.useState("");
 
   const [Results, setResults] = React.useState(menuEle);
-  
+
   useEffect(() => {
-   
-    setResults(menuEle.filter(function res(item:any){
-      if(item.name.toLowerCase().includes(Search.toLowerCase())){
-        return true;
-      }else if(item.children){
-        // we are returning children.length as it will be either 0 or not zero
-        return (item.children=item.children.filter((data)=>res(data))).length
-      }
-    }));
+    setResults(
+      menuEle.filter(function res(item: any) {
+        if (item.name.toLowerCase().includes(Search.toLowerCase())) {
+          return true;
+        } else if (item.children) {
+          // we are returning children.length as it will be either 0 or not zero
+          if (
+            (item.children = item.children.filter((data) => res(data))).length
+          ) {
+            return true;
+          }
+        }
+      })
+    );
   }, [Search]);
 
   return (
