@@ -1,0 +1,61 @@
+const z = menuEle.map(function (item) {
+    // const reqArry = [];
+    const obj = {
+      name: "",
+      children: [{}],
+    };
+    const x = item.name
+      .toLocaleLowerCase()
+      .includes(Search.toLocaleLowerCase());
+    if (x) {
+      obj.name = item.name;
+    }
+    obj.children = item.children.filter((child: { name: string }) =>
+      child.name.toLowerCase().includes(Search.toLowerCase())
+    );
+    // reqArry.push(obj);
+    if (obj.children.length > 0) {
+      if (obj.name === null) {
+        obj.name = item.name;
+      }
+    }
+    return obj;
+  });
+
+//late ho jaaye ga agar idher value de toh
+//i need to initilaized result value before render
+//cannot do it before contructor as Search state variable 
+=>was not decleared yet.
+componentDidMount(){
+this.setState({results:z});
+
+}
+
+
+
+
+ menuEle[0].children.filter((child: { name: string }) =>
+          child.name.toLowerCase().includes(Search.toLowerCase())
+        );
+ 
+        const x = item.name
+          .toLocaleLowerCase()
+          .includes(Search.toLocaleLowerCase());
+        if (x) {
+          obj.name = item.name;
+        }
+        // todo
+        obj.children = item.children.filter((child: { name: string }) =>
+          child.name.toLowerCase().includes(Search.toLowerCase())
+        );
+        console.log(obj.children);
+        
+
+        // reqArry.push(obj);
+        if (obj.children.length > 0) {
+          if (obj.name === "") {
+            obj.name = item.name;
+          }
+        }
+        return obj;
+      });

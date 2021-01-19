@@ -6,58 +6,43 @@ import menuEle from "../menuData";
 
 function MenuBar() {
   const [Search, setSearch] = React.useState("");
-  const z = menuEle.map(function (item) {
-    // const reqArry = [];
-    const obj = {
-      name: "",
-      children: [{}],
-    };
-    const x = item.name
-      .toLocaleLowerCase()
-      .includes(Search.toLocaleLowerCase());
-    if (x) {
-      obj.name = item.name;
-    }
-    obj.children = item.children.filter((child: { name: string }) =>
-      child.name.toLowerCase().includes(Search.toLowerCase())
-    );
-    // reqArry.push(obj);
-    if (obj.children.length > 0) {
-      if (obj.name === null) {
-        obj.name = item.name;
-      }
-    }
-    return obj;
-  });
 
-  const [Results, setResults] = React.useState(z);
+  const [Results, setResults] = React.useState([
+    { name: "home", children: [{}] },
+  ]);
 
   useEffect(() => {
-    setResults(
-      menuEle.map(function (item) {
-        // const reqArry = [];
-        const obj = {
-          name: "",
-          children: [{}],
-        };
-        const x = item.name
-          .toLocaleLowerCase()
-          .includes(Search.toLocaleLowerCase());
-        if (x) {
+    let rslt = menuEle[0].children.map(function (item) {
+      
+      const obj = {
+        name: "",
+        children: [{}],
+      };
+      const x = item.name
+        .toLocaleLowerCase()
+        .includes(Search.toLocaleLowerCase());
+      if (x) {
+        obj.name = item.name;
+      }
+      obj.children = item.children.filter((child: { name: string }) =>
+        child.name.toLowerCase().includes(Search.toLowerCase())
+      );
+
+     
+      if (obj.children.length > 0) {
+        if (obj.name === "") {
           obj.name = item.name;
         }
-        obj.children = item.children.filter((child: { name: string }) =>
-          child.name.toLowerCase().includes(Search.toLowerCase())
-        );
-        // reqArry.push(obj);
-        if (obj.children.length > 0) {
-          if (obj.name === "") {
-            obj.name = item.name;
-          }
-        }
-        return obj;
-      })
-    );
+      }
+      if (item.name.toLocaleLowerCase().includes(Search.toLocaleLowerCase())) {
+        obj.children = item.children;
+      }
+
+      return obj;
+    });
+    setResults([
+      { name: "Home", children: rslt.filter((item) => item.name !== "") },
+    ]);
   }, [Search]);
 
   return (
@@ -69,26 +54,25 @@ function MenuBar() {
             onChange={(event) => setSearch(event.target.value)}
           />
         </Menu.Item>
-        <Menu.Item>
-          <div
-            style={{
-              borderTop: "solid 1px grey",
-              marginTop: "1rem",
-              paddingTop: "1rem",
-            }}
-          >
-            <SourceTree
-              setActiveItem={console.log}
-              baseIcon={null}
-              baseColor={null}
-              checkable={true}
-              singleChecked={true}
-              treeData={Results}
-              getChecked={console.log}
-            />
-          </div>
-        </Menu.Item>
+        <Menu.Item></Menu.Item>
       </Menu>
+      <div
+        style={{
+          borderTop: "solid 1px grey",
+          marginTop: "1rem",
+          paddingTop: "1rem",
+        }}
+      >
+        <SourceTree
+          setActiveItem={console.log}
+          baseIcon={null}
+          baseColor={'blue'}
+          checkable={true}
+          singleChecked={true}
+          treeData={Results}
+          getChecked={console.log}
+        />
+      </div>
     </div>
   );
 }
